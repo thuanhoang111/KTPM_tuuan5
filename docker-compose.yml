@@ -1,0 +1,29 @@
+version: "3.7"
+services:
+  api_service:
+    build: .
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+  sql-server:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    hostname: sql-server
+    container_name: sql-server
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: sapassword.
+      MSSQL_DB: Infor_fight
+      MSSQL_USER: as
+      MSSQL_PASSWORD: sapassword.
+    volumes:
+      - db:/var/lib/mssql
+
+volumes:
+  db:
+    driver: local
